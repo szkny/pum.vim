@@ -184,8 +184,10 @@ function! pum#popup#_open(startcol, items, mode) abort
     " NOTE: scroll_height must be positive
     let scroll_height = max([scroll_height, 1])
 
-    let scroll_row = pos[0]
-    let scroll_col = pos[1] + width
+    let scroll_row_offset = a:mode=='c' || options.border=='none' ? 0 : 1
+    let scroll_col_offset = a:mode=='c' && options.border!='none' ? pos[1]<1 : 0
+    let scroll_row = pos[0] + scroll_row_offset
+    let scroll_col = pos[1] + width + scroll_col_offset
     let scroll_winopts = #{
           \   relative: 'editor',
           \   width: strwidth(options.scrollbar_char),
